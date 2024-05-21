@@ -1,29 +1,6 @@
 import WhiteLogo from 'assets/logos/jonatam_logo_white.png'
-import { API } from './config'
-import { useEffect } from 'react'
 
 export const App = () => {
-  useEffect(() => {
-    getHelth()
-  }, [])
-
-  const getHelth = () => {
-    const url = `${API}/health`
-
-    const configGetUserData = {
-      method: 'GET',
-      headers: {
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Content-Type': 'application/json',
-        mode: 'cors'
-      }
-    }
-
-    fetch(url, configGetUserData)
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error))
-  }
   return (
     <section className='FatherContainer w-svw h-svh flex flex-col max-w-[1920px] m-auto'>
       <header className='w-full mx-auto flex items-center border-b-[1px] border-[#EEE3] py-[10px]'>
