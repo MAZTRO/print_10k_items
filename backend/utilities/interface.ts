@@ -1,6 +1,7 @@
 import { Response } from 'express'
 
 export interface RandomUser {
+  id: number;
   name: string;
   age: number;
   description: string;

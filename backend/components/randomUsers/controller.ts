@@ -1,11 +1,11 @@
 import { Response, Request } from "express"
 import { SuccessResponse, ErrorResponse } from "../../routes/response"
 import { RandomUser } from "../../utilities/interface"
-import { generateRandomUser } from "./generateRandomUser"
+import { generateRandomUsers } from "./generateRandomUser"
 
 export const getRandomUsers = (req: Request, res: Response) => {
   try {
-    const users: RandomUser[] = Array.from({ length: 500 }, generateRandomUser)
+    const users: RandomUser[] = generateRandomUsers(100000)
 
     SuccessResponse({
       response: res,

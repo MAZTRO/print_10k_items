@@ -39,12 +39,25 @@ const getRandomIamgeId = () => {
   return imageID[randomIndex]
 }
 
-export const generateRandomUser = (): RandomUser => {
+const generateRandomUser = (n: number): RandomUser => {
   return {
+    id: n,
     name: getRandomName(),
     age: getRandomInt(10, 79),
     description: getRandomSentence(5, 20),
     image: `https://picsum.photos/id/${getRandomIamgeId()}/200/200`,
     abilities: [...new Set(Array.from({ length: Math.floor(Math.random() * 4) + 2 }, getRandomAbility))],
   }
+}
+
+export const generateRandomUsers = (count: number): RandomUser[] => {
+  if (count < 1) {
+    throw new Error('Invalid count')
+  }
+  let tempArr = []
+  for (let index = 0; index < count; index++) {
+    tempArr.push(generateRandomUser(index + 1))
+  }
+
+  return tempArr
 }
