@@ -1,5 +1,6 @@
 import WhiteLogo from 'assets/logos/jonatam_logo_white.png'
 import { ListItems } from './components/listItems/listItems'
+import { Filters } from './components/filtering/filters'
 import 'react-toastify/dist/ReactToastify.css'
 
 export const App = () => {
@@ -16,7 +17,7 @@ export const App = () => {
 
       <main className='mainContainer m-auto flex w-full h-full overflow-hidden'>
         <section className='sidePanel m-auto p-[10px] w-[15%] h-full border-[#EEE3] border-r-[1px] overflow-y-auto flex flex-col'>
-          <h2>Filters</h2>
+          <Filters />
         </section>
 
         <section className='principalSection w-[85%] h-full m-auto flex flex-col'>
