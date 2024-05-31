@@ -5,7 +5,7 @@ import { generateRandomUsers } from "./generateRandomUser"
 
 export const getRandomUsers = (req: Request, res: Response) => {
   try {
-    const users: RandomUser[] = generateRandomUsers(10000)
+    const users: RandomUser[] = generateRandomUsers(1000000)
 
     SuccessResponse({
       response: res,
