@@ -7,7 +7,7 @@ export const filterByNameAndDescription = (
   descriptionFilter: string,
   listItem: React.MutableRefObject<itemsType[][]>,
   threeMiddleIdx: React.MutableRefObject<number[]>
-): { totalLength: number, initialArray: itemsType[] } => {
+): { totalLength: number, initialArray: itemsType[][] | itemsType[] } => {
   const tempList = originalItems.current
 
   if (nameFilter && descriptionFilter) {
@@ -23,7 +23,7 @@ export const filterByNameAndDescription = (
     const filteredList = [filteredListByName, filteredListByDescription].flat()
     const polishedList = filteredList.filter((ele, idx) => filteredList.indexOf(ele) !== idx)
 
-    if (polishedList.length > 0 && polishedList.length > LIMITER_LENGHT * 2) {
+    if (polishedList.length > 0 && polishedList.length > LIMITER_LENGHT) {
       const tempArr: itemsType[][] = []
       for (let i = 0; i < polishedList.length + 1; i++) {
         const tempIdx = (+([i]) || 1) % LIMITER_LENGHT === 0
@@ -60,9 +60,9 @@ export const filterByNameAndDescription = (
       }
 
       threeMiddleIdx.current = [0, 1]
-      const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
       listItem.current = tempArr
-      return { totalLength: filteredList.length, initialArray: slicedList }
+
+      return { totalLength: filteredList.length, initialArray: tempArr }
     } else {
       listItem.current = [filteredList]
       threeMiddleIdx.current = [0]
@@ -87,9 +87,8 @@ export const filterByNameAndDescription = (
       }
 
       threeMiddleIdx.current = [0, 1]
-      const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
       listItem.current = tempArr
-      return { totalLength: filteredList.length, initialArray: slicedList }
+      return { totalLength: filteredList.length, initialArray: tempArr }
     } else {
       listItem.current = [filteredList]
       threeMiddleIdx.current = [0]
@@ -99,7 +98,8 @@ export const filterByNameAndDescription = (
     /* ======= BY NONE ============ */
 
     listItem.current = originalItems.current
-    const initialArray = threeMiddleIdx.current.map(i => originalItems.current[i]).flat()
-    return { totalLength: originalItems.current.flat().length, initialArray }
+    threeMiddleIdx.current = [0, 1]
+
+    return { totalLength: originalItems.current.flat().length, initialArray: originalItems.current }
   }
 }

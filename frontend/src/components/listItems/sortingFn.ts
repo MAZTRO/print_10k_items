@@ -2,7 +2,7 @@ import { itemsType, LIMITER_LENGHT, sortingOptionsType } from 'src/utils/types'
 
 /* Sort all items */
 export const sortingItems = (
-  filteredData: itemsType[],
+  filteredData: itemsType[][] | itemsType[],
   sortingStore: sortingOptionsType,
   threeMiddleIdx: React.MutableRefObject<number[]>,
   listItem: React.MutableRefObject<itemsType[][]>
@@ -25,7 +25,7 @@ export const sortingItems = (
     }
   })
 
-  if (sortedList.length > 0 && sortedList.length > LIMITER_LENGHT * 2) {
+  if (sortedList.length > 0 && sortedList.length > LIMITER_LENGHT) {
     const tempArr: itemsType[][] = []
     for (let i = 0; i < sortedList.length + 1; i++) {
       const tempIdx = (+([i]) || 1) % LIMITER_LENGHT === 0
@@ -36,11 +36,11 @@ export const sortingItems = (
 
     threeMiddleIdx.current = [0, 1]
     const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
+
     listItem.current = tempArr
     return slicedList
   } else {
     listItem.current = [sortedList]
-    threeMiddleIdx.current = [0]
     return sortedList
   }
 }

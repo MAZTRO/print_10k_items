@@ -70,6 +70,11 @@ export const Printer = () => {
         listItem
       )
 
+      /* console.log(listItem)
+      console.log(threeMiddleIdx)
+      console.log(totalIndxDown)
+      console.log(totalIndxUp) */
+
       setTotalItems(data.totalLength)
       setItems(sorteredList)
     }

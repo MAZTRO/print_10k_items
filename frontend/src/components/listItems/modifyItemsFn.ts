@@ -21,6 +21,7 @@ export const modifyItems = (
         totalIndxUp.current = threeMiddleIdx.current[0]
       } else {
         const isTotalLength = threeMiddleIdx.current[threeMiddleIdx.current.length - 1] === totalLenght
+
         if (!isTotalLength && totalIndxDown.current <= totalLenght) {
           threeMiddleIdx.current.push(totalIndxDown.current)
           totalIndxDown.current = threeMiddleIdx.current[threeMiddleIdx.current.length - 1] + (isTotalLength ? 0 : 1)
@@ -28,6 +29,7 @@ export const modifyItems = (
       }
 
       const tempListDown = threeMiddleIdx.current.map(i => listItem.current[i]).flat()
+
       return tempListDown
     } else if (isUp) {
       // Whit an array of 3 index, print the items of the big array with these 3 index
