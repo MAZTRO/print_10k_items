@@ -1,20 +1,18 @@
-import { useEffect, useState, useRef } from 'react'
 import { getItems } from './getItems'
-import { toast, ToastContainer } from 'react-toastify'
-import { itemsType, LIMITER_LENGHT } from 'src/utils/types'
-import { toastConfig } from 'src/utils/configToester'
-import { useSortingStore } from 'src/store/sortingStore'
-import { useFilterStore } from 'src/store/filtersStore'
+import { sortingItems } from './sortingFn'
 import { modifyItems } from './modifyItemsFn'
-import { useDebounce } from 'use-debounce'
-import { filterByNameAndDescription } from './filterAndSortingFn'
+import { useEffect, useState, useRef } from 'react'
+import { toastConfig } from 'src/utils/configToester'
+import { toast, ToastContainer } from 'react-toastify'
+import { useFilterStore } from 'src/store/filtersStore'
+import { useSortingStore } from 'src/store/sortingStore'
+import { filterByNameAndDescription } from './filtersByTextsFn'
+import { itemsType, LIMITER_LENGHT } from 'src/utils/types'
 
 export const Printer = () => {
   const nameFilter = useFilterStore(state => state.nameFilter)
   const sortingStore = useSortingStore(state => state.sortingStore)
   const descriptionFilter = useFilterStore(state => state.descriptionFilter)
-  const [debouncedNameFilter] = useDebounce(nameFilter, 500)
-  const [debouncedDescriptionFilter] = useDebounce(descriptionFilter, 500)
 
   const totalIndxUp = useRef<number>(1)
   const totalIndxDown = useRef<number>(2)
@@ -55,63 +53,35 @@ export const Printer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listItem, items])
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (originalItems.current.length > 0) handleSortStoreChanges()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortingStore])
+  }, [sortingStore]) */
 
   useEffect(() => {
     if (originalItems.current.length > 0) {
-      const { initialArray, totalLength } = filterByNameAndDescription(
+      const data = filterByNameAndDescription(
         originalItems,
-        debouncedNameFilter,
-        debouncedDescriptionFilter,
+        nameFilter,
+        descriptionFilter,
         listItem,
         threeMiddleIdx
       )
 
-      setTotalItems(totalLength)
-      setItems(initialArray)
-      console.log('FILTERING')
+      const sorteredList = sortingItems(
+        data.initialArray,
+        sortingStore,
+        threeMiddleIdx,
+        listItem
+      )
+
+      setTotalItems(data.totalLength)
+      setItems(sorteredList)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedNameFilter, debouncedDescriptionFilter])
-
-  /* Sort all items */
-  const handleSortStoreChanges = () => {
-    const tempList = listItem.current
-
-    const sortedList: itemsType[] = tempList.flat().sort((a, b) => {
-      if (sortingStore.value === 'ageDesc') {
-        return b.age - a.age
-      } else if (sortingStore.value === 'ageAsc') {
-        return a.age - b.age
-      } else if (sortingStore.value === 'nameAsc') {
-        return a.name.localeCompare(b.name)
-      } else if (sortingStore.value === 'nameDesc') {
-        return b.name.localeCompare(a.name)
-      } else if (sortingStore.value === '') {
-        return a.id - b.id
-      } else {
-        return 0
-      }
-    })
-
-    const tempArr: itemsType[][] = []
-    for (let i = 0; i < sortedList.length + 1; i++) {
-      const tempIdx = (+([i]) || 1) % LIMITER_LENGHT === 0
-      if (tempIdx) {
-        tempArr.push(sortedList.slice(i - LIMITER_LENGHT, i))
-      }
-    }
-
-    const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
-
-    setItems(slicedList)
-    listItem.current = tempArr
-  }
+  }, [nameFilter, descriptionFilter, sortingStore])
 
   /* Get all items */
   const handleGetItems = async () => {
@@ -177,6 +147,7 @@ export const Printer = () => {
         }
         {
           items.map((elem, idx) => {
+            if (!elem) return null
             return (
               <article id={`card_${elem.id}`} key={idx} className='itemCard relative w-[400px] h-auto border-[1px] border-[#EEE3] p-[10px] felx flex-col'>
                 <p className='absolute top-0 left-[5px] text-[14px]'>ID: {elem.id}</p>

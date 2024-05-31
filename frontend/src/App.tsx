@@ -16,7 +16,7 @@ export const App = () => {
       </header>
 
       <main className='mainContainer m-auto flex w-full h-full overflow-hidden'>
-        <section className='sidePanel m-auto p-[10px] w-[15%] h-full border-[#EEE3] border-r-[1px] overflow-y-auto flex flex-col'>
+        <section className='sidePanel m-auto p-[10px] w-[15%] min-w-[250px] h-full border-[#EEE3] border-r-[1px] overflow-y-auto flex flex-col'>
           <Filters />
         </section>
 

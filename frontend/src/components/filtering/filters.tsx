@@ -1,10 +1,23 @@
+import { useEffect, useState } from 'react'
 import { useFilterStore } from 'src/store/filtersStore'
+import { useDebounce } from 'use-debounce'
 
 export const Filters = () => {
-  const nameFilter = useFilterStore(state => state.nameFilter)
   const changeNameFilter = useFilterStore(state => state.changeNameFilter)
-  const descriptionFilter = useFilterStore(state => state.descriptionFilter)
   const changeDescriptionFilter = useFilterStore(state => state.changeDescriptionFilter)
+
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+
+  const [debouncedNameFilter] = useDebounce(name, 700)
+  const [debouncedDescriptionFilter] = useDebounce(description, 700)
+
+  useEffect(() => {
+    changeNameFilter(debouncedNameFilter)
+    changeDescriptionFilter(debouncedDescriptionFilter)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedNameFilter, debouncedDescriptionFilter])
 
   return (
     <section className='listContainer w-full h-full flex flex-col'>
@@ -17,8 +30,8 @@ export const Filters = () => {
             className='w-full px-[5%] py-[3px] bg-p-white text-p-black rounded-[5px] placeholder:text-inherit placeholder:opacity-70 outline-none'
             type='text'
             placeholder='By name...'
-            value={nameFilter}
-            onChange={e => changeNameFilter(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </label>
 
@@ -29,8 +42,8 @@ export const Filters = () => {
             className='w-full px-[5%] py-[3px] bg-p-white text-p-black rounded-[5px] placeholder:text-inherit placeholder:opacity-70 outline-none'
             type='text'
             placeholder='By description...'
-            value={descriptionFilter}
-            onChange={e => changeDescriptionFilter(e.target.value)}
+            value={description}
+            onChange={e => setDescription(e.target.value)}
           />
         </label>
       </div>
