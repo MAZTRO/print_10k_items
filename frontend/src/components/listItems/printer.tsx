@@ -53,12 +53,6 @@ export const Printer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listItem, items])
 
-  /* useEffect(() => {
-    if (originalItems.current.length > 0) handleSortStoreChanges()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortingStore]) */
-
   useEffect(() => {
     if (originalItems.current.length > 0) {
       const data = filterByNameAndDescription(

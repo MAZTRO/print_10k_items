@@ -25,16 +25,22 @@ export const sortingItems = (
     }
   })
 
-  const tempArr: itemsType[][] = []
-  for (let i = 0; i < sortedList.length + 1; i++) {
-    const tempIdx = (+([i]) || 1) % LIMITER_LENGHT === 0
-    if (tempIdx) {
-      tempArr.push(sortedList.slice(i - LIMITER_LENGHT, i))
+  if (sortedList.length > 0 && sortedList.length > LIMITER_LENGHT * 2) {
+    const tempArr: itemsType[][] = []
+    for (let i = 0; i < sortedList.length + 1; i++) {
+      const tempIdx = (+([i]) || 1) % LIMITER_LENGHT === 0
+      if (tempIdx) {
+        tempArr.push(sortedList.slice(i - LIMITER_LENGHT, i))
+      }
     }
+
+    threeMiddleIdx.current = [0, 1]
+    const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
+    listItem.current = tempArr
+    return slicedList
+  } else {
+    listItem.current = [sortedList]
+    threeMiddleIdx.current = [0]
+    return sortedList
   }
-
-  const slicedList = threeMiddleIdx.current.map(i => tempArr[i]).flat()
-
-  listItem.current = tempArr
-  return slicedList
 }
