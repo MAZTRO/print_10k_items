@@ -22,6 +22,8 @@ Infinite Scrolling: As the user scrolls down, new data chunks are dynamically ad
 
 This project utilizes a two-step approach to handle large datasets:
 
+![Image description](./frontend/public/arraySlice.png)
+
 - **Data Preprocessing**: The initial data, an array of objects with properties like name, id, description, and age, is sliced into an array of sub-arrays. Each sub-array contains a predefined number of objects **(e.g., 20)**.
 
 - **Lazy Loading and DOM Manipulation**: Initially, only the first few sub-arrays (e.g., first two, representing 40 items) are rendered in the DOM. As the user scrolls down, the application detects the scroll position and dynamically adds the next sub-array to the DOM. To maintain a constant number of items displayed, the first sub-array is removed from the DOM simultaneously.
